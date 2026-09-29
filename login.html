@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Polypharmacy Detector</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class' }</script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    * { font-family: 'Inter', system-ui, sans-serif; }
+
+    /* ── Animated gradient background ── */
+    .bg-animated {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 35%, #0c4a6e 70%, #0f172a 100%);
+      background-size: 400% 400%;
+      animation: gradShift 12s ease infinite;
+    }
+    @keyframes gradShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ── Floating orbs ── */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+      animation: orbFloat 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .orb-1 { width:400px; height:400px; background:#6366f1; top:-120px; left:-100px; animation-delay:0s; }
+    .orb-2 { width:300px; height:300px; background:#0ea5e9; bottom:-80px; right:-80px; animation-delay:-3s; }
+    .orb-3 { width:220px; height:220px; background:#8b5cf6; top:50%; left:60%; animation-delay:-5s; }
+    @keyframes orbFloat {
+      0%,100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-30px) scale(1.05); }
+    }
+
+    /* ── Card ── */
+    .glass-card {
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .dark .glass-card {
+      background: rgba(15,23,42,0.6);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* ── Slide-up entrance ── */
+    .slide-up {
+      animation: slideUp .55s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    @keyframes slideUp {
+      from { opacity:0; transform:translateY(32px) scale(.97); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    /* ── Input glow ── */
+    .input-field {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #f1f5f9;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+    .input-field::placeholder { color: rgba(148,163,184,0.6); }
+    .input-field:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.25);
+      background: rgba(255,255,255,0.11);
+    }
+
+    /* ── Submit button ── */
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      transition: transform .15s, box-shadow .15s, filter .15s;
+      box-shadow: 0 4px 20px rgba(99,102,241,0.4);
+    }
+    .btn-primary:hover { filter: brightness(1.1); box-shadow: 0 6px 28px rgba(99,102,241,0.55); }
+    .btn-primary:active { transform: scale(.97); }
+
+    /* ── Tab ── */
+    .tab-pill {
+      transition: background .2s, color .2s, box-shadow .2s;
+      color: rgba(148,163,184,0.8);
+    }
+    .tab-pill.active {
+      background: rgba(99,102,241,0.25);
+      color: #a5b4fc;
+      box-shadow: inset 0 0 0 1px rgba(99,102,241,0.4);
+    }
+
+    /* ── Spinner ── */
+    .spin { animation: spin .7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── DNA strand decoration ── */
+    .strand-dot {
+      width:6px; height:6px; border-radius:50%;
+      background: rgba(99,102,241,0.5);
+      animation: strandPulse 2s ease-in-out infinite;
+    }
+    @keyframes strandPulse {
+      0%,100% { opacity:.3; transform:scale(1); }
+      50%      { opacity:1; transform:scale(1.4); }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-animated relative overflow-hidden flex items-center justify-center px-4 py-12">
+
+  <!-- Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Theme toggle -->
+  <button onclick="toggleTheme()" id="themeBtn"
+    class="fixed top-4 right-4 z-50 p-2.5 rounded-xl glass-card text-slate-300 hover:text-white transition text-lg">
+    🌙
+  </button>
+
+  <!-- Card -->
+  <div class="slide-up relative z-10 w-full max-w-md">
+
+    <!-- Logo + title -->
+    <div class="text-center mb-8">
+      <!-- Animated icon -->
+      <div class="relative inline-flex items-center justify-center mb-4">
+        <div class="absolute w-20 h-20 rounded-full bg-indigo-500/20 animate-ping"></div>
+        <div class="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/40">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.5 20H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H20a2 2 0 0 1 2 2v3"/>
+            <circle cx="18" cy="18" r="4"/><path d="m15.5 15.5 5 5"/>
+          </svg>
+        </div>
+      </div>
+      <h1 class="text-2xl font-bold text-white tracking-tight">Polypharmacy Detector</h1>
+      <p class="text-slate-400 text-sm mt-1">Asisten Apoteker Klinis</p>
+
+      <!-- Decorative dots -->
+      <div class="flex items-center justify-center gap-2 mt-3">
+        <div class="strand-dot" style="animation-delay:0s"></div>
+        <div class="w-8 h-px bg-indigo-500/40"></div>
+        <div class="strand-dot" style="animation-delay:.3s"></div>
+        <div class="w-8 h-px bg-indigo-500/40"></div>
+        <div class="strand-dot" style="animation-delay:.6s"></div>
+        <div class="w-8 h-px bg-indigo-500/40"></div>
+        <div class="strand-dot" style="animation-delay:.9s"></div>
+      </div>
+    </div>
+
+    <!-- Glass card -->
+    <div class="glass-card rounded-3xl p-8 shadow-2xl">
+
+      <!-- Tabs -->
+      <div class="flex gap-1 bg-white/5 rounded-2xl p-1 mb-7">
+        <button id="tabLogin" onclick="switchTab('login')"
+          class="tab-pill active flex-1 py-2.5 rounded-xl text-sm font-semibold">
+          Masuk
+        </button>
+        <button id="tabRegister" onclick="switchTab('register')"
+          class="tab-pill flex-1 py-2.5 rounded-xl text-sm font-semibold">
+          Daftar
+        </button>
+      </div>
+
+      <!-- Alert banner -->
+      <div id="banner" class="hidden mb-5 px-4 py-3 rounded-2xl text-sm font-medium"></div>
+
+      <!-- LOGIN FORM -->
+      <form id="formLogin" onsubmit="submitLogin(event)" class="space-y-5">
+        <div class="space-y-1.5">
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Username</label>
+          <input id="loginUser" type="text" autocomplete="username" placeholder="masukkan username"
+            class="input-field w-full rounded-2xl px-4 py-3 text-sm" />
+        </div>
+        <div class="space-y-1.5">
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Password</label>
+          <div class="relative">
+            <input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••••"
+              class="input-field w-full rounded-2xl px-4 py-3 text-sm pr-11" />
+            <button type="button" onclick="togglePwd('loginPass', this)"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition text-base">👁</button>
+          </div>
+        </div>
+        <button type="submit" id="btnLogin"
+          class="btn-primary w-full py-3.5 rounded-2xl text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2">
+          <span>Masuk Sekarang</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="formRegister" onsubmit="submitRegister(event)" class="space-y-5 hidden">
+        <div class="space-y-1.5">
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Username</label>
+          <input id="regUser" type="text" autocomplete="username" placeholder="pilih username unik"
+            class="input-field w-full rounded-2xl px-4 py-3 text-sm" />
+        </div>
+        <div class="space-y-1.5">
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Password</label>
+          <div class="relative">
+            <input id="regPass" type="password" autocomplete="new-password" placeholder="min. 6 karakter"
+              class="input-field w-full rounded-2xl px-4 py-3 text-sm pr-11" />
+            <button type="button" onclick="togglePwd('regPass', this)"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition text-base">👁</button>
+          </div>
+        </div>
+        <!-- Password strength -->
+        <div id="strengthBar" class="hidden space-y-1">
+          <div class="flex gap-1">
+            <div id="s1" class="h-1 flex-1 rounded-full bg-white/10 transition-all duration-300"></div>
+            <div id="s2" class="h-1 flex-1 rounded-full bg-white/10 transition-all duration-300"></div>
+            <div id="s3" class="h-1 flex-1 rounded-full bg-white/10 transition-all duration-300"></div>
+            <div id="s4" class="h-1 flex-1 rounded-full bg-white/10 transition-all duration-300"></div>
+          </div>
+          <p id="strengthLabel" class="text-xs text-slate-500"></p>
+        </div>
+        <div class="space-y-1.5">
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Konfirmasi Password</label>
+          <input id="regPass2" type="password" autocomplete="new-password" placeholder="ulangi password"
+            class="input-field w-full rounded-2xl px-4 py-3 text-sm" />
+        </div>
+        <button type="submit" id="btnRegister"
+          class="btn-primary w-full py-3.5 rounded-2xl text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2">
+          <span>Buat Akun</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </button>
+      </form>
+
+    </div>
+
+    <p class="text-center text-xs text-slate-600 mt-5">Demo prototype · Data tidak disimpan permanen</p>
+  </div>
+
+  <script>
+    // Theme
+    function applyTheme(dark) {
+      document.documentElement.classList.toggle('dark', dark);
+      document.getElementById('themeBtn').textContent = dark ? '☀️' : '🌙';
+    }
+    function toggleTheme() {
+      const dark = !document.documentElement.classList.contains('dark');
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+      applyTheme(dark);
+    }
+    applyTheme(localStorage.getItem('theme') === 'dark');
+
+    // Redirect if already logged in
+    fetch('/api/me').then(r => { if (r.ok) location.href = '/'; });
+
+    // Show/hide password
+    function togglePwd(id, btn) {
+      const inp = document.getElementById(id);
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+    }
+
+    // Password strength
+    document.getElementById('regPass').addEventListener('input', function() {
+      const val = this.value;
+      const bar = document.getElementById('strengthBar');
+      const segs = [document.getElementById('s1'),document.getElementById('s2'),document.getElementById('s3'),document.getElementById('s4')];
+      const label = document.getElementById('strengthLabel');
+      if (!val) { bar.classList.add('hidden'); return; }
+      bar.classList.remove('hidden');
+      let score = 0;
+      if (val.length >= 6)  score++;
+      if (val.length >= 10) score++;
+      if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+      if (/[0-9]/.test(val) || /[^A-Za-z0-9]/.test(val)) score++;
+      const levels = [
+        { color: 'bg-red-500',    text: 'Sangat Lemah', labelColor: 'text-red-400' },
+        { color: 'bg-orange-400', text: 'Lemah',        labelColor: 'text-orange-400' },
+        { color: 'bg-yellow-400', text: 'Cukup',        labelColor: 'text-yellow-400' },
+        { color: 'bg-emerald-500',text: 'Kuat',         labelColor: 'text-emerald-400' },
+      ];
+      const lvl = levels[score - 1] || levels[0];
+      segs.forEach((s, i) => {
+        s.className = `h-1 flex-1 rounded-full transition-all duration-300 ${i < score ? lvl.color : 'bg-white/10'}`;
+      });
+      label.className = `text-xs font-semibold ${lvl.labelColor}`;
+      label.textContent = lvl.text;
+    });
+
+    // Tabs
+    function switchTab(tab) {
+      const isLogin = tab === 'login';
+      document.getElementById('formLogin').classList.toggle('hidden', !isLogin);
+      document.getElementById('formRegister').classList.toggle('hidden', isLogin);
+      document.getElementById('tabLogin').classList.toggle('active', isLogin);
+      document.getElementById('tabRegister').classList.toggle('active', !isLogin);
+      hideBanner();
+    }
+
+    // Banner
+    function showBanner(msg, ok) {
+      const b = document.getElementById('banner');
+      b.className = `mb-5 px-4 py-3 rounded-2xl text-sm font-medium ${
+        ok ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+           : 'bg-red-500/20 text-red-300 border border-red-500/30'}`;
+      b.textContent = msg;
+      b.classList.remove('hidden');
+    }
+    function hideBanner() { document.getElementById('banner').classList.add('hidden'); }
+
+    // Set loading state on button
+    function setBtn(id, loading) {
+      const btn = document.getElementById(id);
+      btn.disabled = loading;
+      btn.style.opacity = loading ? '0.7' : '1';
+    }
+
+    // Auth
+    async function submitLogin(e) {
+      e.preventDefault();
+      const username = document.getElementById('loginUser').value.trim();
+      const password = document.getElementById('loginPass').value;
+      if (!username || !password) { showBanner('Isi semua kolom.', false); return; }
+      setBtn('btnLogin', true);
+      const res = await fetch('/api/login', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      setBtn('btnLogin', false);
+      if (data.ok) location.href = '/';
+      else showBanner(data.message || 'Login gagal.', false);
+    }
+
+    async function submitRegister(e) {
+      e.preventDefault();
+      const username = document.getElementById('regUser').value.trim();
+      const password = document.getElementById('regPass').value;
+      const password2 = document.getElementById('regPass2').value;
+      if (!username || !password) { showBanner('Isi semua kolom.', false); return; }
+      if (password.length < 6) { showBanner('Password minimal 6 karakter.', false); return; }
+      if (password !== password2) { showBanner('Password tidak cocok.', false); return; }
+      setBtn('btnRegister', true);
+      const res = await fetch('/api/register', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      setBtn('btnRegister', false);
+      if (data.ok) location.href = '/';
+      else showBanner(data.message || 'Registrasi gagal.', false);
+    }
+  </script>
+</body>
+</html>
