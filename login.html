@@ -3,254 +3,337 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login — Polypharmacy Detector</title>
+  <title>Masuk — Polypharmacy Collision Detector</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config = { darkMode: 'class' }</script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            slate: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a',
+              950: '#0b0f19',
+            },
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              300: '#93c5fd',
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            },
+            indigo: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              300: '#a5b4fc',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+            }
+          }
+        }
+      }
+    };
+  </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    * { font-family: 'Inter', system-ui, sans-serif; }
-
-    /* ── Animated gradient background ── */
-    .bg-animated {
-      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 35%, #0c4a6e 70%, #0f172a 100%);
-      background-size: 400% 400%;
-      animation: gradShift 12s ease infinite;
-    }
-    @keyframes gradShift {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+    *, body {
+      font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+      letter-spacing: -0.011em;
     }
 
-    /* ── Floating orbs ── */
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.18;
-      animation: orbFloat 8s ease-in-out infinite;
-      pointer-events: none;
+    .login-mesh {
+      background:
+        radial-gradient(at 10% 20%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+        radial-gradient(at 90% 10%, rgba(59, 130, 246, 0.14) 0px, transparent 50%),
+        radial-gradient(at 50% 90%, rgba(14, 165, 233, 0.08) 0px, transparent 50%),
+        #f8fafc;
     }
-    .orb-1 { width:400px; height:400px; background:#6366f1; top:-120px; left:-100px; animation-delay:0s; }
-    .orb-2 { width:300px; height:300px; background:#0ea5e9; bottom:-80px; right:-80px; animation-delay:-3s; }
-    .orb-3 { width:220px; height:220px; background:#8b5cf6; top:50%; left:60%; animation-delay:-5s; }
-    @keyframes orbFloat {
-      0%,100% { transform: translateY(0) scale(1); }
-      50%      { transform: translateY(-30px) scale(1.05); }
+    .dark .login-mesh {
+      background:
+        radial-gradient(at 10% 20%, rgba(79, 70, 229, 0.18) 0px, transparent 50%),
+        radial-gradient(at 90% 10%, rgba(37, 99, 235, 0.16) 0px, transparent 50%),
+        radial-gradient(at 50% 90%, rgba(14, 165, 233, 0.1) 0px, transparent 50%),
+        #0b0f19;
     }
 
-    /* ── Card ── */
-    .glass-card {
-      background: rgba(255,255,255,0.06);
+    .glass-box {
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.6);
     }
-    .dark .glass-card {
-      background: rgba(15,23,42,0.6);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    /* ── Slide-up entrance ── */
-    .slide-up {
-      animation: slideUp .55s cubic-bezier(0.16,1,0.3,1) both;
-    }
-    @keyframes slideUp {
-      from { opacity:0; transform:translateY(32px) scale(.97); }
-      to   { opacity:1; transform:translateY(0) scale(1); }
+    .dark .glass-box {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid rgba(51, 65, 85, 0.7);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
     }
 
-    /* ── Input glow ── */
-    .input-field {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #f1f5f9;
-      transition: border-color .2s, box-shadow .2s, background .2s;
+    .inp-field {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      color: #0f172a;
+      transition: all 0.2s ease;
     }
-    .input-field::placeholder { color: rgba(148,163,184,0.6); }
-    .input-field:focus {
+    .dark .inp-field {
+      background: #0f172a;
+      border-color: #334155;
+      color: #f8fafc;
+    }
+    .inp-field:focus {
       outline: none;
-      border-color: #6366f1;
-      box-shadow: 0 0 0 3px rgba(99,102,241,0.25);
-      background: rgba(255,255,255,0.11);
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
     }
 
-    /* ── Submit button ── */
-    .btn-primary {
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      transition: transform .15s, box-shadow .15s, filter .15s;
-      box-shadow: 0 4px 20px rgba(99,102,241,0.4);
+    .btn-main {
+      background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 8px 20px -4px rgba(79, 70, 229, 0.35);
     }
-    .btn-primary:hover { filter: brightness(1.1); box-shadow: 0 6px 28px rgba(99,102,241,0.55); }
-    .btn-primary:active { transform: scale(.97); }
-
-    /* ── Tab ── */
-    .tab-pill {
-      transition: background .2s, color .2s, box-shadow .2s;
-      color: rgba(148,163,184,0.8);
+    .btn-main:hover {
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 25px -4px rgba(79, 70, 229, 0.45);
     }
-    .tab-pill.active {
-      background: rgba(99,102,241,0.25);
-      color: #a5b4fc;
-      box-shadow: inset 0 0 0 1px rgba(99,102,241,0.4);
+    .btn-main:active {
+      transform: scale(0.985);
     }
 
-    /* ── Spinner ── */
-    .spin { animation: spin .7s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── DNA strand decoration ── */
-    .strand-dot {
-      width:6px; height:6px; border-radius:50%;
-      background: rgba(99,102,241,0.5);
-      animation: strandPulse 2s ease-in-out infinite;
+    .tab-btn {
+      transition: all 0.2s ease;
     }
-    @keyframes strandPulse {
-      0%,100% { opacity:.3; transform:scale(1); }
-      50%      { opacity:1; transform:scale(1.4); }
+    .tab-btn.active {
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+    }
+    .dark .tab-btn.active {
+      background: #1e293b;
+      color: #f8fafc;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes popEnter {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .pop-enter {
+      animation: popEnter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
   </style>
 </head>
-<body class="min-h-screen bg-animated relative overflow-hidden flex items-center justify-center px-4 py-12">
+<body class="min-h-screen login-mesh text-slate-800 dark:text-slate-100 flex items-center justify-center p-4 sm:p-6 transition-colors duration-300">
 
-  <!-- Orbs -->
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
+  <!-- Top bar controls -->
+  <header class="fixed top-4 right-4 z-50 flex items-center gap-2">
+    <a href="/" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/80 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 backdrop-blur-md transition shadow-xs">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6"/>
+      </svg>
+      Beranda
+    </a>
+    <button onclick="toggleTheme()" id="themeBtn" aria-label="Toggle Mode"
+      class="w-8 h-8 rounded-xl bg-white/80 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80 text-slate-600 dark:text-slate-300 flex items-center justify-center text-sm backdrop-blur-md transition hover:scale-105 shadow-xs">
+      🌙
+    </button>
+  </header>
 
-  <!-- Theme toggle -->
-  <button onclick="toggleTheme()" id="themeBtn"
-    class="fixed top-4 right-4 z-50 p-2.5 rounded-xl glass-card text-slate-300 hover:text-white transition text-lg">
-    🌙
-  </button>
-
-  <!-- Card -->
-  <div class="slide-up relative z-10 w-full max-w-md">
-
-    <!-- Logo + title -->
-    <div class="text-center mb-8">
-      <!-- Animated icon -->
-      <div class="relative inline-flex items-center justify-center mb-4">
-        <div class="absolute w-20 h-20 rounded-full bg-indigo-500/20 animate-ping"></div>
-        <div class="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/40">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10.5 20H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H20a2 2 0 0 1 2 2v3"/>
-            <circle cx="18" cy="18" r="4"/><path d="m15.5 15.5 5 5"/>
-          </svg>
-        </div>
+  <main class="w-full max-w-[420px] pop-enter">
+    <!-- Brand badge & logo -->
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 text-white shadow-xl shadow-indigo-500/25 mb-3.5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.5 20H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H20a2 2 0 0 1 2 2v3"/>
+          <circle cx="18" cy="18" r="4"/><path d="m15.5 15.5 5 5"/>
+        </svg>
       </div>
-      <h1 class="text-2xl font-bold text-white tracking-tight">Polypharmacy Detector</h1>
-      <p class="text-slate-400 text-sm mt-1">Asisten Apoteker Klinis</p>
-
-      <!-- Decorative dots -->
-      <div class="flex items-center justify-center gap-2 mt-3">
-        <div class="strand-dot" style="animation-delay:0s"></div>
-        <div class="w-8 h-px bg-indigo-500/40"></div>
-        <div class="strand-dot" style="animation-delay:.3s"></div>
-        <div class="w-8 h-px bg-indigo-500/40"></div>
-        <div class="strand-dot" style="animation-delay:.6s"></div>
-        <div class="w-8 h-px bg-indigo-500/40"></div>
-        <div class="strand-dot" style="animation-delay:.9s"></div>
-      </div>
+      <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Polypharmacy AI</h1>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Platform Klinis Deteksi Interaksi Obat Berbahaya</p>
     </div>
 
-    <!-- Glass card -->
-    <div class="glass-card rounded-3xl p-8 shadow-2xl">
+    <!-- Main Card -->
+    <div class="glass-box rounded-3xl p-6 sm:p-7">
 
-      <!-- Tabs -->
-      <div class="flex gap-1 bg-white/5 rounded-2xl p-1 mb-7">
+      <!-- Navigation Tabs -->
+      <nav class="flex p-1 bg-slate-100 dark:bg-slate-800/80 rounded-2xl mb-5" aria-label="Tab Autentikasi">
         <button id="tabLogin" onclick="switchTab('login')"
-          class="tab-pill active flex-1 py-2.5 rounded-xl text-sm font-semibold">
-          Masuk
+          class="tab-btn active flex-1 py-2 rounded-xl text-xs font-bold text-slate-500 dark:text-slate-400">
+          Masuk Akun
         </button>
         <button id="tabRegister" onclick="switchTab('register')"
-          class="tab-pill flex-1 py-2.5 rounded-xl text-sm font-semibold">
-          Daftar
+          class="tab-btn flex-1 py-2 rounded-xl text-xs font-bold text-slate-500 dark:text-slate-400">
+          Daftar Baru
         </button>
-      </div>
+      </nav>
 
-      <!-- Alert banner -->
-      <div id="banner" class="hidden mb-5 px-4 py-3 rounded-2xl text-sm font-medium"></div>
+      <!-- Alert Banner -->
+      <div id="banner" class="hidden mb-4 p-3 rounded-2xl text-xs font-semibold flex items-center gap-2"></div>
 
-      <!-- LOGIN FORM -->
-      <form id="formLogin" onsubmit="submitLogin(event)" class="space-y-5">
-        <div class="space-y-1.5">
-          <label class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Username</label>
-          <input id="loginUser" type="text" autocomplete="username" placeholder="masukkan username"
-            class="input-field w-full rounded-2xl px-4 py-3 text-sm" />
-        </div>
-        <div class="space-y-1.5">
-          <label class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Password</label>
+      <!-- Form Login -->
+      <form id="formLogin" onsubmit="submitLogin(event)" class="space-y-4">
+        <div>
+          <label for="loginUser" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Username</label>
           <div class="relative">
-            <input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••••"
-              class="input-field w-full rounded-2xl px-4 py-3 text-sm pr-11" />
-            <button type="button" onclick="togglePwd('loginPass', this)"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition text-base">👁</button>
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+              </svg>
+            </span>
+            <input id="loginUser" type="text" autocomplete="username" placeholder="Contoh: dokter / apoteker"
+              class="inp-field w-full rounded-2xl pl-10 pr-4 py-2.5 text-sm" />
           </div>
         </div>
+
+        <div>
+          <label for="loginPass" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Password</label>
+          <div class="relative">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </span>
+            <input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••••"
+              class="inp-field w-full rounded-2xl pl-10 pr-10 py-2.5 text-sm" />
+            <button type="button" onclick="togglePwd('loginPass', this)" aria-label="Lihat Password"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
         <button type="submit" id="btnLogin"
-          class="btn-primary w-full py-3.5 rounded-2xl text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2">
-          <span>Masuk Sekarang</span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          class="btn-main w-full py-3 rounded-2xl text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 mt-2">
+          <span>Masuk Sistem</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </button>
+
+        <!-- Quick Demo Profiles -->
+        <div class="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-2.5">
+          <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider text-center">Akun Demo Langsung (1-Klik)</p>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="quickLogin('apoteker', 'apoteker123')"
+              class="p-2.5 rounded-xl border border-indigo-100 dark:border-indigo-900/60 bg-indigo-50/70 dark:bg-indigo-950/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs">
+              <span>💊</span>
+              <span>Apoteker</span>
+            </button>
+            <button type="button" onclick="quickLogin('dokter', 'dokter123')"
+              class="p-2.5 rounded-xl border border-blue-100 dark:border-blue-900/60 bg-blue-50/70 dark:bg-blue-950/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs">
+              <span>🩺</span>
+              <span>Dokter</span>
+            </button>
+          </div>
+
+          <button type="button" onclick="guestLogin()"
+            class="w-full py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold transition flex items-center justify-center gap-2 shadow-xs">
+            <span>🚀</span>
+            <span>Masuk sebagai Tamu (Uji Coba Cepat)</span>
+          </button>
+        </div>
       </form>
 
-      <!-- REGISTER FORM -->
-      <form id="formRegister" onsubmit="submitRegister(event)" class="space-y-5 hidden">
-        <div class="space-y-1.5">
-          <label class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Username</label>
-          <input id="regUser" type="text" autocomplete="username" placeholder="pilih username unik"
-            class="input-field w-full rounded-2xl px-4 py-3 text-sm" />
-        </div>
-        <div class="space-y-1.5">
-          <label class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Password</label>
+      <!-- Form Register -->
+      <form id="formRegister" onsubmit="submitRegister(event)" class="space-y-4 hidden">
+        <div>
+          <label for="regUser" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Username Baru</label>
           <div class="relative">
-            <input id="regPass" type="password" autocomplete="new-password" placeholder="min. 6 karakter"
-              class="input-field w-full rounded-2xl px-4 py-3 text-sm pr-11" />
-            <button type="button" onclick="togglePwd('regPass', this)"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition text-base">👁</button>
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+              </svg>
+            </span>
+            <input id="regUser" type="text" autocomplete="username" placeholder="Masukkan username unik"
+              class="inp-field w-full rounded-2xl pl-10 pr-4 py-2.5 text-sm" />
           </div>
         </div>
-        <!-- Password strength -->
-        <div id="strengthBar" class="hidden space-y-1">
-          <div class="flex gap-1">
-            <div id="s1" class="h-1 flex-1 rounded-full bg-white/10 transition-all duration-300"></div>
-            <div id="s2" class="h-1 flex-1 rounded-full bg-white/10 transition-all duration-300"></div>
-            <div id="s3" class="h-1 flex-1 rounded-full bg-white/10 transition-all duration-300"></div>
-            <div id="s4" class="h-1 flex-1 rounded-full bg-white/10 transition-all duration-300"></div>
+
+        <div>
+          <label for="regPass" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Password</label>
+          <div class="relative">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </span>
+            <input id="regPass" type="password" autocomplete="new-password" placeholder="Minimal 6 karakter"
+              class="inp-field w-full rounded-2xl pl-10 pr-10 py-2.5 text-sm" />
+            <button type="button" onclick="togglePwd('regPass', this)" aria-label="Lihat Password"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
           </div>
-          <p id="strengthLabel" class="text-xs text-slate-500"></p>
         </div>
-        <div class="space-y-1.5">
-          <label class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Konfirmasi Password</label>
-          <input id="regPass2" type="password" autocomplete="new-password" placeholder="ulangi password"
-            class="input-field w-full rounded-2xl px-4 py-3 text-sm" />
+
+        <!-- Password Strength Meter -->
+        <div id="strengthBar" class="hidden space-y-1.5">
+          <div class="flex gap-1.5">
+            <div id="s1" class="h-1 flex-1 rounded-full bg-slate-200 dark:bg-slate-700 transition-all duration-300"></div>
+            <div id="s2" class="h-1 flex-1 rounded-full bg-slate-200 dark:bg-slate-700 transition-all duration-300"></div>
+            <div id="s3" class="h-1 flex-1 rounded-full bg-slate-200 dark:bg-slate-700 transition-all duration-300"></div>
+            <div id="s4" class="h-1 flex-1 rounded-full bg-slate-200 dark:bg-slate-700 transition-all duration-300"></div>
+          </div>
+          <p id="strengthLabel" class="text-[11px] font-semibold text-slate-500"></p>
         </div>
+
+        <div>
+          <label for="regPass2" class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Konfirmasi Password</label>
+          <div class="relative">
+            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+            </span>
+            <input id="regPass2" type="password" autocomplete="new-password" placeholder="Ulangi password"
+              class="inp-field w-full rounded-2xl pl-10 pr-4 py-2.5 text-sm" />
+          </div>
+        </div>
+
         <button type="submit" id="btnRegister"
-          class="btn-primary w-full py-3.5 rounded-2xl text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2">
-          <span>Buat Akun</span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-            <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+          class="btn-main w-full py-3 rounded-2xl text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 mt-2">
+          <span>Daftar Akun Baru</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>
           </svg>
         </button>
       </form>
 
     </div>
 
-    <p class="text-center text-xs text-slate-600 mt-5">Demo prototype · Data tidak disimpan permanen</p>
-  </div>
+    <!-- Security Footer -->
+    <p class="text-center text-[11px] text-slate-400 mt-5">
+      Dilindungi sistem enkripsi sesi lokal · Prototype Hackathon
+    </p>
+  </main>
 
   <script>
-    // Theme
     function applyTheme(dark) {
       document.documentElement.classList.toggle('dark', dark);
-      document.getElementById('themeBtn').textContent = dark ? '☀️' : '🌙';
+      const btn = document.getElementById('themeBtn');
+      if (btn) btn.textContent = dark ? '☀️' : '🌙';
     }
     function toggleTheme() {
       const dark = !document.documentElement.classList.contains('dark');
@@ -259,44 +342,52 @@
     }
     applyTheme(localStorage.getItem('theme') === 'dark');
 
-    // Redirect if already logged in
-    fetch('/api/me').then(r => { if (r.ok) location.href = '/'; });
+    // Auto-redirect if session is active
+    fetch('/api/me')
+      .then(r => r.json())
+      .then(data => {
+        if (data && data.ok && !data.is_guest) location.href = '/';
+      })
+      .catch(() => {});
 
-    // Show/hide password
     function togglePwd(id, btn) {
       const inp = document.getElementById(id);
-      inp.type = inp.type === 'password' ? 'text' : 'password';
-      btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+      const isPwd = inp.type === 'password';
+      inp.type = isPwd ? 'text' : 'password';
+      btn.innerHTML = isPwd
+        ? `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-.722-3.25"/><path d="M2 8a10.645 10.645 0 0 0 20 0"/><path d="m20 15-1.726-2.05"/><path d="m4 15 1.726-2.05"/><path d="m9 18 .722-3.25"/></svg>`
+        : `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`;
     }
 
-    // Password strength
+    // Password strength calculation
     document.getElementById('regPass').addEventListener('input', function() {
       const val = this.value;
       const bar = document.getElementById('strengthBar');
-      const segs = [document.getElementById('s1'),document.getElementById('s2'),document.getElementById('s3'),document.getElementById('s4')];
+      const segs = [document.getElementById('s1'), document.getElementById('s2'), document.getElementById('s3'), document.getElementById('s4')];
       const label = document.getElementById('strengthLabel');
       if (!val) { bar.classList.add('hidden'); return; }
       bar.classList.remove('hidden');
+
       let score = 0;
-      if (val.length >= 6)  score++;
+      if (val.length >= 6) score++;
       if (val.length >= 10) score++;
       if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
       if (/[0-9]/.test(val) || /[^A-Za-z0-9]/.test(val)) score++;
+
       const levels = [
-        { color: 'bg-red-500',    text: 'Sangat Lemah', labelColor: 'text-red-400' },
-        { color: 'bg-orange-400', text: 'Lemah',        labelColor: 'text-orange-400' },
-        { color: 'bg-yellow-400', text: 'Cukup',        labelColor: 'text-yellow-400' },
-        { color: 'bg-emerald-500',text: 'Kuat',         labelColor: 'text-emerald-400' },
+        { color: 'bg-rose-500', text: 'Sangat Lemah', labelColor: 'text-rose-500' },
+        { color: 'bg-amber-500', text: 'Cukup', labelColor: 'text-amber-500' },
+        { color: 'bg-blue-500', text: 'Bagus', labelColor: 'text-blue-500' },
+        { color: 'bg-emerald-500', text: 'Kuat & Aman', labelColor: 'text-emerald-500' },
       ];
-      const lvl = levels[score - 1] || levels[0];
+      const lvl = levels[Math.max(0, score - 1)];
       segs.forEach((s, i) => {
-        s.className = `h-1 flex-1 rounded-full transition-all duration-300 ${i < score ? lvl.color : 'bg-white/10'}`;
+        s.className = `h-1 flex-1 rounded-full transition-all duration-300 ${i < score ? lvl.color : 'bg-slate-200 dark:bg-slate-700'}`;
       });
-      label.className = `text-xs font-semibold ${lvl.labelColor}`;
+      label.className = `text-[11px] font-semibold ${lvl.labelColor}`;
       label.textContent = lvl.text;
     });
 
-    // Tabs
     function switchTab(tab) {
       const isLogin = tab === 'login';
       document.getElementById('formLogin').classList.toggle('hidden', !isLogin);
@@ -306,39 +397,72 @@
       hideBanner();
     }
 
-    // Banner
     function showBanner(msg, ok) {
       const b = document.getElementById('banner');
-      b.className = `mb-5 px-4 py-3 rounded-2xl text-sm font-medium ${
-        ok ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-           : 'bg-red-500/20 text-red-300 border border-red-500/30'}`;
-      b.textContent = msg;
+      b.className = `mb-4 p-3 rounded-2xl text-xs font-semibold flex items-center gap-2 ${
+        ok ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
+           : 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800'
+      }`;
+      b.innerHTML = `<span>${ok ? '✓' : '⚠️'}</span><span>${msg}</span>`;
       b.classList.remove('hidden');
     }
-    function hideBanner() { document.getElementById('banner').classList.add('hidden'); }
+    function hideBanner() {
+      document.getElementById('banner').classList.add('hidden');
+    }
 
-    // Set loading state on button
     function setBtn(id, loading) {
       const btn = document.getElementById(id);
+      if (!btn) return;
       btn.disabled = loading;
       btn.style.opacity = loading ? '0.7' : '1';
     }
 
-    // Auth
+    const nextUrl = new URLSearchParams(location.search).get('next') || '/';
+
+    function guestLogin() {
+      location.href = nextUrl;
+    }
+
+    async function quickLogin(user, pass) {
+      document.getElementById('loginUser').value = user;
+      document.getElementById('loginPass').value = pass;
+      setBtn('btnLogin', true);
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: user, password: pass })
+        });
+        const data = await res.json();
+        setBtn('btnLogin', false);
+        if (data.ok) location.href = nextUrl;
+        else showBanner(data.message || 'Login gagal.', false);
+      } catch (err) {
+        setBtn('btnLogin', false);
+        showBanner('Koneksi ke server gagal.', false);
+      }
+    }
+
     async function submitLogin(e) {
       e.preventDefault();
       const username = document.getElementById('loginUser').value.trim();
       const password = document.getElementById('loginPass').value;
-      if (!username || !password) { showBanner('Isi semua kolom.', false); return; }
+      if (!username || !password) { showBanner('Silakan isi username dan password.', false); return; }
       setBtn('btnLogin', true);
-      const res = await fetch('/api/login', {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ username, password })
-      });
-      const data = await res.json();
-      setBtn('btnLogin', false);
-      if (data.ok) location.href = '/';
-      else showBanner(data.message || 'Login gagal.', false);
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        setBtn('btnLogin', false);
+        if (data.ok) location.href = nextUrl;
+        else showBanner(data.message || 'Username atau password salah.', false);
+      } catch (err) {
+        setBtn('btnLogin', false);
+        showBanner('Koneksi ke server gagal.', false);
+      }
     }
 
     async function submitRegister(e) {
@@ -346,18 +470,24 @@
       const username = document.getElementById('regUser').value.trim();
       const password = document.getElementById('regPass').value;
       const password2 = document.getElementById('regPass2').value;
-      if (!username || !password) { showBanner('Isi semua kolom.', false); return; }
+      if (!username || !password) { showBanner('Silakan lengkapi semua data.', false); return; }
       if (password.length < 6) { showBanner('Password minimal 6 karakter.', false); return; }
-      if (password !== password2) { showBanner('Password tidak cocok.', false); return; }
+      if (password !== password2) { showBanner('Konfirmasi password tidak cocok.', false); return; }
       setBtn('btnRegister', true);
-      const res = await fetch('/api/register', {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ username, password })
-      });
-      const data = await res.json();
-      setBtn('btnRegister', false);
-      if (data.ok) location.href = '/';
-      else showBanner(data.message || 'Registrasi gagal.', false);
+      try {
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        setBtn('btnRegister', false);
+        if (data.ok) location.href = nextUrl;
+        else showBanner(data.message || 'Pendaftaran gagal.', false);
+      } catch (err) {
+        setBtn('btnRegister', false);
+        showBanner('Koneksi ke server gagal.', false);
+      }
     }
   </script>
 </body>
